@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node"],
+    "module": "CommonJS",
+    "lib": ["ESNext"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "target": "ES6",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
+  },
+  "include": [
+    "src/**/*.ts"
+, "src/server.js", "src/routes/priceRoutes.js", "src/routes/alertRoutes.js", "src/controllers/priceController.js", "src/controllers/alertController.js", "src/models/alertModel.js", "src/models/priceModel.js"  ],
+  "exclude": ["node_modules"]
+}

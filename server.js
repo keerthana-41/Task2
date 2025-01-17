@@ -9,25 +9,20 @@ const PORT = 5000;
 
 app.use(express.json());
 
-// Home Route
 app.get("/", (req, res) => {
   res.send("Crypto Price Monitoring System is Running...");
 });
 
-// Use routes
 app.use("/api", priceRoutes);
 app.use("/api", alertRoutes);
 
-// Background process to check alerts periodically
 const checkAlerts = async () => {
   try {
-    // Fetch the latest prices (from priceController)
     console.log("inside checkAlerts");
 
     const prices = await priceController.fetchCryptoPrices();
     console.log("prices inside checkAlerts", prices);
 
-    // If prices are fetched, check if any alert is triggered
     if (prices && Object.keys(prices).length > 0) {
       await alertController.checkAlerts(prices);
     } else {
@@ -39,7 +34,6 @@ const checkAlerts = async () => {
 };
 
 
-// Set an interval to check alerts every 30 seconds
 setInterval(checkAlerts, 30000);
 
 app.listen(PORT, () => {

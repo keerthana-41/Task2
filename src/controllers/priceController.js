@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-let cachedPrices = {}; // Store the latest crypto prices
+let cachedPrices = {}; 
 
 const fetchCryptoPrices = async (req, res) => {
   try {
@@ -12,11 +12,10 @@ const fetchCryptoPrices = async (req, res) => {
     cachedPrices = response.data;
     console.log("Updated Prices:", cachedPrices);
 
-    // Send response if called from an API request
     if (res) {
       res.json({ success: true, prices: cachedPrices });
     }
-    return cachedPrices; // Return the updated prices to use them elsewhere
+    return cachedPrices; 
   } catch (error) {
     console.error("Error fetching cryptocurrency prices:", error.message);
     if (res) {
@@ -25,12 +24,11 @@ const fetchCryptoPrices = async (req, res) => {
         message: "Failed to fetch prices",
       });
     }
-    return {}; // Return an empty object if there's an error
+    return {}; 
   }
 };
 
 
-// Function to get cached prices
 const getCryptoPrices = (req, res) => {
   if (Object.keys(cachedPrices).length === 0) {
     return res.status(404).json({ success: false, message: "No data available yet" });

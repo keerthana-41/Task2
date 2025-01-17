@@ -1,12 +1,11 @@
 const alertModel = require('../models/alertModel');
 const nodemailer = require('nodemailer');
 
-// Function to create a new alert
+
 async function setAlert(req, res) {
   const { email, currency, targetPrice } = req.body;
 
   try {
-    // Create alert in the database
     await alertModel.createAlert(email, currency, targetPrice);
     res.status(200).send('Alert set successfully');
   } catch (error) {
@@ -14,18 +13,20 @@ async function setAlert(req, res) {
   }
 }
 
-// Function to send alert emails
 async function sendAlert(email, currency, targetPrice, currentPrice) {
   console.log("inside sendalerttt");
   
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'vayalapallik@gmail.com',  // Replace with your email
-      pass: 'Keerthana@10'    // Replace with your email password or app password
-    }
+      user: 'pythoncourse.143@gmail.com',  
+      pass: 'iyft esdo ffee sngk'  
+    },
+    secure: true,  
+    port: 465, 
   });
-  console.log("transporter",transporter);
+  console.log("transporter", transporter);
+  
   let mailOptions = {
     from: 'vayalapallik@gmail.com',
     to: email,
@@ -41,27 +42,22 @@ async function sendAlert(email, currency, targetPrice, currentPrice) {
   }
 }
 
-// Function to check alerts and send notifications
 async function checkAlerts(prices) {
   try {
-    console.log("areyyyy");
-    
-    // Fetch all alerts from the database
+
     const alerts = await alertModel.getAlerts();
-    console.log("alerts model",alerts);
-  
+    console.log("alerts model", alerts);
+
     alerts.forEach(async (alert) => {
-      console.log("alert inside checkalert",alerts);
-      console.log("alert",alert);
-      const { email, currency, targetPrice } = alert;
-      const currentPrice = prices[currency]?.usd;
-      console.log("currentprice and target price",currentPrice,targetPrice);
-    
-      if (currentPrice && currentPrice >= targetPrice) {
-        // Send email alert if target is reached
+      console.log("alert inside checkalert", alerts);
+      console.log("alert", alert);
+      const { email, currency, target_price } = alert;
+      const currentPrice = prices[currency]?.usd; 
+      console.log("currentprice and target price", currentPrice, target_price);
+
+      if (currentPrice && currentPrice >= target_price) {
         console.log("sending alert email");
-        await sendAlert(email, currency, targetPrice, currentPrice);
-        // Optionally, you could update the alert status in the DB to 'notified'
+        await sendAlert(email, currency, target_price, currentPrice);
       }
     });
   } catch (error) {
@@ -72,5 +68,5 @@ async function checkAlerts(prices) {
 module.exports = {
   setAlert,
   sendAlert,
-  checkAlerts,  // Add checkAlerts to the exports
+  checkAlerts,  
 };
